@@ -5,26 +5,30 @@ import java.util.Scanner;
 public class InverseMatrix {
 
     public static void main(String[] args) {
+        System.out.println("Linear Equation Calculator");
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter size of matrix >> ");
         int size = sc.nextInt();
 
         float[][] matrixA = new float[size][size];
-//        float[][] m={{2,3,4,1},
-//                {3,2,7,3},
-//                {9,1,3,0},
-//                {3,4,1,8}};
+        float[][] matrixB = new float[size][1];
+        float[] matrixX = new float[size];
         float[][] inv = new float[size][size];
 
-        getData(matrixA);
-        System.out.println("Inverse of matrix is >> ");
+        getData(matrixA, "A");
+        getData(matrixB, "B");
 
+        System.out.println("Inverse of matrix A is >> ");
         if (inverse(matrixA, inv, size)) prt(inv);
+
+        multiplyMx(inv, matrixB, matrixX);
+        System.out.println("====Answer of X====");
+        print(matrixX);
     }
 
-    public static void getData(float n[][]) {
+    public static void getData(float n[][], String s) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("----Enter Matrix----");
+        System.out.println("----Enter Matrix " + s + "----");
         for (int i = 0; i < n.length; i++) {
             for (int j = 0; j < n[0].length; j++) {
                 System.out.print("X[" + i + "][" + j + "] >> ");
@@ -34,12 +38,18 @@ public class InverseMatrix {
     }
 
     public static void prt(float[][] result) {
-        //System.out.println("----ANSWER----");
         for (int i = 0; i < result.length; i++) {
             for (int j = 0; j < result[0].length; j++) {
                 System.out.printf("%.2f %s", result[i][j], "\t");
             }
             System.out.println();
+        }
+    }
+
+    public static void print(float[] result) {
+        for (int i = 0; i < result.length; i++) {
+
+            System.out.printf("%s%d %s %.2f %s", "X", i + 1, "=", result[i], "\t");
         }
     }
 
@@ -81,7 +91,6 @@ public class InverseMatrix {
             adj[0][0] = 1;
             return;
         }
-
         int k = 1;
         float[][] temp = new float[n][n];
         for (int i = 0; i < n; i++) {
@@ -109,5 +118,13 @@ public class InverseMatrix {
                 inverse[i][j] = adj[i][j] / det;
 
         return true;
+    }
+
+    public static void multiplyMx(float[][] a, float[][] b, float[] result) {
+        for (int j = 0; j < a[0].length; j++) {
+            for (int k = 0; k < b.length; k++) {
+                result[j] = result[j] + a[j][k] * b[k][0];
+            }
+        }
     }
 }
